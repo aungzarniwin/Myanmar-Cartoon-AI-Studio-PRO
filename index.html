@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15120e">
+<title>Myanmar Cartoon AI Studio PRO V2</title>
+<style>
+:root{
+ --bg:#100f0d;--panel:#1c1a16;--panel2:#252119;
+ --line:#3b3529;--gold:#edbb58;--text:#f8f4eb;
+ --muted:#b6afa2;--green:#86d6a0;--red:#ff8b85;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:system-ui,-apple-system,"Noto Sans Myanmar",sans-serif;font-size:14px}
+header{padding:24px 18px;background:linear-gradient(135deg,#392817,#17130e);
+border-bottom:1px solid var(--line)}
+.brand{font-size:11px;letter-spacing:2px;color:var(--gold);font-weight:800}
+h1{font-size:24px;line-height:1.5;margin:9px 0}
+header p,.muted{color:var(--muted);font-size:12px;line-height:1.8}
+main{max-width:1050px;margin:auto;padding:16px}
+nav{display:flex;gap:8px;overflow:auto;margin-bottom:16px;padding-bottom:4px}
+button,select,input,textarea{font:inherit;color:var(--text);background:#151410;
+border:1px solid var(--line);border-radius:10px;padding:11px;width:100%;min-width:0}
+button{cursor:pointer}
+button:hover{border-color:var(--gold)}
+button:disabled{opacity:.45;cursor:not-allowed}
+nav button{white-space:nowrap;width:auto}
+nav button.active,.primary{background:var(--gold);color:#201708;border-color:var(--gold);font-weight:800}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;
+padding:16px;margin-bottom:14px}
+h2{font-size:17px;margin:0 0 12px}
+h3{font-size:14px;margin:0 0 9px}
+label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px}
+textarea{resize:vertical;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions>*{flex:1}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.pill{width:auto;padding:7px 10px;border-radius:20px;font-size:12px}
+.tag{display:inline-block;background:#392c18;color:var(--gold);
+padding:5px 9px;border-radius:8px;font-size:11px}
+.output{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;
+background:#12110f;border:1px solid var(--line);border-radius:10px;
+padding:13px;font-size:13px;max-height:700px;overflow:auto}
+.scene{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0}
+.scene summary{cursor:pointer;color:var(--gold);font-weight:700;line-height:1.8}
+.scene pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;
+font-size:12px;line-height:1.8;color:#e9e0d0}
+.stat{background:var(--panel2);padding:12px;border-radius:10px}
+.stat strong{display:block;color:var(--gold);font-size:20px}
+.hidden{display:none!important}
+.small{font-size:11px;color:var(--muted);line-height:1.8}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+hr{border:0;border-top:1px solid var(--line);margin:15px 0}
+@media(max-width:600px){
+ h1{font-size:20px}.grid,.grid3{grid-template-columns:1fr}
+ main{padding:10px}.card{padding:13px}
+ .actions{flex-wrap:wrap}.actions>*{flex:1 1 40%}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">AUNG CREATIVE LAB · V2.0</div>
+ <h1>🎬 Myanmar Cartoon AI Studio PRO</h1>
+ <p>30 Genres · Story Engine · Character Bible · Image & Video Prompts · Myanmar Voiceover</p>
+</header>
+
+<main>
+<nav>
+ <button class="active" data-tab="studio">🎬 Studio</button>
+ <button data-tab="characters">👤 Characters</button>
+ <button data-tab="projects">📁 Projects</button>
+ <button data-tab="guide">📖 Guide</button>
+</nav>
+
+<section id="studio">
+ <div class="card">
+  <h2>01 / Story Creator</h2>
+  <label>ဇာတ်လမ်းအမည်</label>
+  <input id="title" value="ရွာသားနဲ့ ဖုန်းအသစ်">
+  <label>ဇာတ်လမ်းအမျိုးအစား — Genre Library (၃၀ မျိုး)</label>
+  <select id="genre"></select>
+  <div id="genreInfo" class="small"></div>
+
+  <label>ဇာတ်လမ်းအကြောင်းအရာ / Story Idea</label>
+  <textarea id="story" rows="4">ရွာသားတစ်ယောက် ဖုန်းအသစ်ဝယ်ပြီး ရွာထဲမှာ ကြွားရာကနေ ရယ်စရာအလွဲအချော်တွေ ဖြစ်လာတယ်။ နောက်ဆုံးမှာ အဓိပ္ပာယ်ရှိတဲ့ သင်ခန်းစာတစ်ခု ရရှိသွားတယ်။</textarea>
+
+  <div class="grid">
+   <div>
+    <label>Video ကြာချိန်</label>
+    <select id="duration">
+     <option value="1">၁ မိနစ်</option>
+     <option value="3">၃ မိနစ်</option>
+     <option value="5" selected>၅ မိနစ်</option>
+     <option value="8">၈ မိနစ်</option>
+     <option value="10">၁၀ မိနစ်</option>
+     <option value="15">၁၅ မိနစ်</option>
+    </select>
+   </div>
+   <div>
+    <label>Scene တစ်ခုကြာချိန်</label>
+    <select id="sceneLength">
+     <option value="6">၆ စက္ကန့်</option>
+     <option value="8" selected>၈ စက္ကန့်</option>
+     <option value="10">၁၀ စက္ကန့်</option>
+    </select>
+   </div>
+   <div>
+    <label>Visual Style</label>
+    <select id="style">
+     <option>3D Cartoon</option>
+     <option>2D Cartoon</option>
+     <option>Comic Illustration</option>
+     <option>Cinematic Animation</option>
+     <option>Anime Style</option>
+     <option>Pixar-inspired 3D family animation</option>
+    </select>
+   </div>
+   <div>
+    <label>Video Aspect Ratio</label>
+    <select id="ratio">
+     <option value="16:9">16:9 YouTube</option>
+     <option value="9:16">9:16 Vertical</option>
+     <option value="1:1">1:1 Square</option>
+    </select>
+   </div>
+   <div>
+    <label>မြန်မာ Voiceover</label>
+    <select id="voice">
+     <option>ဇာတ်ကောင်အလိုက် အသံမျိုးစုံ</option>
+     <option>ယောက်ျားအသံ</option>
+     <option>မိန်းမအသံ</option>
+     <option>အသံနက်ပြီး တည်ငြိမ်သော Narrator</option>
+     <option>စိတ်လှုပ်ရှားဖွယ် Narrator</option>
+    </select>
+   </div>
+   <div>
+    <label>ဇာတ်ညွှန်းဘာသာစကား</label>
+    <select id="language">
+     <option value="my">မြန်မာဘာသာ</option>
+     <option value="global">Global English Audience</option>
+     <option value="mixed">English Prompts + Burmese Dialogue</option>
+    </select>
+   </div>
+  </div>
+
+  <div class="actions">
+   <button class="primary" id="generate">✨ Generate Story</button>
+   <button id="save">💾 Save Project</button>
+  </div>
+  <p class="small">မှတ်ချက်: Story Engine သည် ရွေးချယ်ထားသော Genre အလိုက် Template များကို စုစည်းထုတ်ပေးသည်။ AI Model သို့ API မချိတ်ထားပါက ၎င်းကိုယ်တိုင် အသစ်စက်စက် ဇာတ်လမ်းဖန်တီးပေးခြင်း မဟုတ်ပါ</p>
+ </div>
+
+ <div class="card">
+  <h2>02 / Character Bible</h2>
+  <div class="grid">
+   <div>
+    <label>အဓိကဇာတ်ကောင်အမည်</label>
+    <input id="charName" value="ကိုမောင်">
+   </div>
+   <div>
+    <label>အသက် / Age</label>
+    <input id="charAge" value="၃၅ နှစ်">
+   </div>
+  </div>
+  <label>Character Appearance</label>
+  <textarea id="character" rows="3">မြန်မာရွာသား၊ နွေးထွေးသောအသားအရောင်၊ အနက်ရောင်ဆံပင်၊ အဝါရောင်အင်္ကျီ၊ အညိုရောင်လုံချည်၊ မျက်နှာအမူအရာ ထင်ရှားပြီး ဟာသဆန်သူ</textarea>
+  <label>Personality / ဇာတ်ကောင်စရိုက်</label>
+  <input id="personality" value="စိတ်အားထက်သန်၊ ကြွားတတ်၊ စိတ်ကောင်းရှိသူ">
+  <label>Costume & Continuity Rules</label>
+  <textarea id="rules" rows="2">အဝတ်အစား၊ မျက်နှာ၊ ဆံပင်၊ အသက်အရွယ်နှင့် ကိုယ်ခန္ဓာအချိုးအစား တစ်သမတ်တည်းဖြစ်ရမည်။ ဇာတ်လမ်းအတွင်း အကြောင်းပြချက်မရှိဘဲ မပြောင်းလဲရ</textarea>
+  <div class="actions">
+   <button id="saveCharacter">Save Character</button>
+   <button id="loadCharacter">Load Character</button>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>03 / Generated Storyboard</h2>
+  <div id="status" class="tag">Ready</div>
+  <div class="grid3" style="margin-top:12px">
+   <div class="stat"><span class="small">Scenes</span><strong id="sceneCount">0</strong></div>
+   <div class="stat"><span class="small">Duration</span><strong id="timeCount">0 min</strong></div>
+   <div class="stat"><span class="small">Genre</span><strong id="genreCount" style="font-size:13px">—</strong></div>
+  </div>
+  <div id="result" style="margin-top:12px">
+   <p class="muted">Genre ရွေးပြီး Generate Story ကိုနှိပ်ပါ</p>
+  </div>
+  <div class="actions">
+   <button id="copyAll" class="primary">📋 Copy All Prompts</button>
+   <button id="download">⬇ Download TXT</button>
+  </div>
+ </div>
+</section>
+
+<section id="characters" class="hidden">
+ <div class="card">
+  <h2>Character Library</h2>
+  <p class="muted">Character Bible ကို Browser ထဲမှာ သိမ်းပြီး Project အသစ်များတွင် ပြန်အသုံးပြုနိုင်သည်</p>
+  <div id="characterLibrary" class="output">Character မသိမ်းရသေးပါ</div>
+ </div>
+</section>
+
+<section id="projects" class="hidden">
+ <div class="card">
+  <h2>Project Library</h2>
+  <p class="muted">သိမ်းထားသော Project များကို ပြန်ဖွင့်ခြင်း၊ ဖျက်ခြင်းနှင့် Export လုပ်ခြင်းတို့ ပြုလုပ်နိုင်သည်</p>
+  <div id="projectList"></div>
+  <hr>
+  <div class="actions">
+   <button id="exportJSON">Export JSON</button>
+   <button id="clearProjects">Clear Projects</button>
+  </div>
+  <label>Import JSON</label>
+  <input type="file" id="importFile" accept=".json,application/json">
+ </div>
+</section>
+
+<section id="guide" class="hidden">
+ <div class="card">
+  <h2>Production Workflow</h2>
+  <p>၁။ Genre၊ Story Idea နဲ့ ကြာချိန် ရွေးပါ</p>
+  <p>၂။ Character Bible မှာ ဇာတ်ကောင်ပုံစံ သတ်မှတ်ပါ</p>
+  <p>၃။ Generate Story နှိပ်ပြီး Scene Prompt များ ထုတ်ပါ</p>
+  <p>၄။ Image Prompt ဖြင့် Scene ပုံများ ဖန်တီးပါ</p>
+  <p>၅။ Video Prompt ကို Video Generator မှာ အသုံးပြုပါ</p>
+  <p>၆။ မြန်မာ Voiceover ကို Text-to-Speech သို့မဟုတ် အသံသွင်းစနစ်နဲ့ ဖန်တီးပါ</p>
+  <p>၇။ Video Editor မှာ ပုံ၊ အသံ၊ Music နဲ့ Subtitle များ ပေါင်းစပ်ပါ</p>
+  <hr>
+  <h3>GitHub Pages</h3>
+  <p class="muted">index.html ကို Repository root ထဲတင်ပြီး Settings → Pages → Deploy from a branch → main → /(root) ကိုရွေးပါ</p>
+  <h3>AI API သတိပြုရန်</h3>
+  <p class="muted">ဤ Version တွင် ပြင်ပ API မပါဝင်ပါ။ API Key ကို HTML ထဲသို့ တိုက်ရိုက်ထည့်ခြင်း မပြုပါနှင့်။ AI Generation အတွက် လုံခြုံသော Backend လိုအပ်နိုင်သည်</p>
+ </div>
+</section>
+</main>
+<footer>MYANMAR CARTOON AI STUDIO PRO · V2.0 · LOCAL PROJECT STORAGE</footer>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const GENRES = [
+{
+name:"ရွာဟာသ",type:"ဟာသ",structure:["ရွာဘဝနှင့် ဇာတ်ကောင်ကို မိတ်ဆက်","ရယ်စရာပြဿနာတစ်ခု ပေါ်လာ","ဇာတ်ကောင်၏ အလွဲအစီအစဉ်","အခြေအနေ ပိုမိုရှုပ်ထွေးလာ","မမျှော်လင့်သော ဟာသလှည့်ကွက်","ရယ်စရာဇာတ်သိမ်း"],
+roles:"ရွာသား၊ ရွာလူကြီး၊ အိမ်နီးချင်း",visual:"မြန်မာကျေးရွာ၊ သစ်သားအိမ်၊ ရွာလမ်း၊ စိုက်ခင်း",
+voice:"သဘာဝကျသော မြန်မာစကားပြော၊ ရွာဓလေ့သုံးစကားနှင့် သင့်တော်သော ဟာသ Timing",
+ending:"နောက်ဆုံးမှာ အလွဲတစ်ခုက ရယ်စရာအဖြစ် ပြောင်းလဲသွားပါစေ"
+},
+{
+name:"မိသားစုဟာသ",type:"ဟာသ",structure:["မိသားစုဝင်များနှင့် နေ့စဉ်ဘဝကို မိတ်ဆက်","အိမ်တွင်းပြဿနာတစ်ခု ဖြစ်လာ","မိသားစုဝင်များက မတူညီသောနည်းလမ်းများဖြင့် ဖြေရှင်း","အလွဲနားလည်မှုများ ဆက်တိုက်ဖြစ်","မထင်မှတ်သော အဖြေ ပေါ်လာ","ရယ်မောပြီး မိသားစုစည်းလုံးမှုဖြင့် အဆုံးသတ်"],
+roles:"မိဘ၊ သားသမီး၊ လင်မယား၊ ဆွေမျိုး",visual:"နွေးထွေးသော မိသားစုအိမ်၊ မီးဖိုချောင်၊ ဧည့်ခန်း",
+voice:"မိသားစုဝင်အလိုက် အသံကွဲပြားစေပြီး သဘာဝကျသော အပြန်အလှန်စကားပြော",
+ending:"အလွဲကို ရှင်းလင်းပြီး မိသားစုအချစ်နှင့် ရယ်မောမှုဖြင့် အဆုံးသတ်"
+},
+{
+name:"အချစ်ဟာသ",type:"ဟာသ",structure:["အဓိကဇာတ်ကောင်များ ဆုံတွေ့","တစ်ဦးက တစ်ဦးကို သဘောကျလာ","အထင်လွဲမှု သို့မဟုတ် ချစ်ရေးအစီအစဉ်","မအောင်မြင်သော ကြိုးစားမှုများ","အမှန်တရား ပေါ်လာ","ချစ်စရာကောင်းသော ဟာသဇာတ်သိမ်း"],
+roles:"ချစ်သူနှစ်ဦး၊ သူငယ်ချင်း၊ ကြားဝင်ကူညီသူ",visual:"မြို့ပန်းခြံ၊ ကော်ဖီဆိုင်၊ လှပသော လမ်းမ",
+voice:"နူးညံ့သော ချစ်စကား၊ သဘာဝကျသော ဟာသ Dialogue",
+ending:"နားလည်မှုရရှိပြီး ချစ်စရာကောင်းသော လှည့်ကွက်တစ်ခုဖြင့် အဆုံးသတ်"
+},
+{
+name:"နည်းပညာဟာသ",type:"ဟာသ",structure:["ဖုန်း သို့မဟုတ် နည်းပညာအသစ်ကို မိတ်ဆက်","ဇာတ်ကောင်က နည်းပညာကို နားလည်မှုလွဲ","အလွဲအသုံးပြုမှုက ပြဿနာဖြစ်လာ","ပြဿနာ ပိုကြီးလာ","နည်းပညာ၏ အမှန်တကယ်အလုပ်လုပ်ပုံ ပေါ်လာ","နည်းပညာနှင့်ပတ်သက်သော ဟာသ Punchline"],
+roles:"နည်းပညာစိတ်ဝင်စားသူ၊ သူငယ်ချင်း၊ ဆိုင်ဝန်ထမ်း",visual:"စမတ်ဖုန်း၊ ကွန်ပျူတာ၊ ဆိုင်၊ ခေတ်မီအိမ်",
+voice:"ခေတ်ပေါ် မြန်မာစကား၊ နည်းပညာအသုံးအနှုန်းများနှင့် ဟာသ",
+ending:"နည်းပညာကို မှားယွင်းအသုံးပြုမှုမှ ထွက်ပေါ်လာသော ဟာသဖြင့် အဆုံးသတ်"
+},
+{
+name:"သရဲဟာသ",type:"ဟာသ",structure:["ထူးဆန်းသောနေရာကို မိတ်ဆက်","ကြောက်စရာအရိပ်အယောင် ပေါ်လာ","ဇာတ်ကောင်က သရဲဟု ထင်မှတ်","ထွက်ပြေးရင်း အလွဲများဖြစ်","ထူးဆန်းမှု၏ အကြောင်းရင်း ပေါ်လာ","ကြောက်စရာနှင့် ရယ်စရာ ရောနှောသော အဆုံးသတ်"],
+roles:"ကြောက်တတ်သူ၊ ရဲရင့်သူ၊ သရဲဟု ထင်မှတ်ရသော အရာ",visual:"လရောင်ည၊ ရွာအိမ်ဟောင်း၊ မြူ၊ လှုပ်ရှားနေသော အရိပ်များ",
+voice:"အစတွင် တိုးတိုးတိတ်တိတ်၊ တဖြည်းဖြည်း စိတ်လှုပ်ရှားလာပြီး နောက်ဆုံးတွင် ဟာသအသံ",
+ending:"ကြောက်စရာလို့ ထင်ထားသည့်အရာ၏ ရယ်စရာအကြောင်းရင်းကို ဖော်ပြ"
+},
+{
+name:"သရဲဇာတ်လမ်း",type:"သည်းထိတ်ရင်ဖို",structure:["ထူးဆန်းသောနေရာနှင့် စည်းမျဉ်းကို မိတ်ဆက်","ပထမဆုံး မရှင်းလင်းသောဖြစ်ရပ်","သရဲ၏ အရိပ်အယောင်များ ပိုများလာ","ဇာတ်ကောင်က လျှို့ဝှက်ချက်ကို စုံစမ်း","အန္တရာယ်နှင့် အမှန်တရား ထိပ်တိုက်တွေ့","ကြောက်မက်ဖွယ် သို့မဟုတ် လျှို့ဝှက်ဆန်းကြယ်သော အဆုံးသတ်"],
+roles:"မျက်မြင်သက်သေ၊ သရဲ၊ စုံစမ်းသူ၊ ဒေသခံ",
+visual:"အိမ်ဟောင်း၊ မှောင်မိုက်သော စင်္ကြံ၊ မြူခိုး၊ လရောင်",
+voice:"တိုးတိတ်သော Narration၊ အသံရပ်နားမှု၊ တဖြည်းဖြည်း မြင့်တက်လာသော စိတ်လှုပ်ရှားမှု",
+ending:"လျှို့ဝှက်ချက်တစ်ခုကို ဖော်ထုတ်ပြီး နောက်ဆုံးတွင် မေးခွန်းကျန်စေ"
+},
+{
+name:"အက်ရှင်",type:"အက်ရှင်",structure:["အရေးပေါ်အခြေအနေကို မိတ်ဆက်","အဓိကတာဝန် သတ်မှတ်","အတားအဆီးနှင့် လိုက်လံမှု","မဟာဗျူဟာပြောင်းလဲရသော ပြဿနာ","အဓိက ထိပ်တိုက်တွေ့မှု","အကျိုးဆက်နှင့် အောင်မြင်မှု သို့မဟုတ် ဆုံးရှုံးမှု"],
+roles:"အဓိကသူရဲကောင်း၊ မိတ်ဖက်၊ ပြိုင်ဘက်၊ သက်သေ",
+visual:"လှုပ်ရှားနေသော ကင်မရာ၊ Dynamic composition၊ လိုက်လံမှု",
+voice:"တိုတောင်းတိကျသော Dialogue၊ အရေးပေါ်အခြေအနေနှင့် ကိုက်ညီသော Narration",
+ending:"အဓိကတာဝန်၏ ရလဒ်ကို ပြပြီး ဇာတ်ကောင်၏ ရွေးချယ်မှုအကျိုးဆက်ကို ဖော်ပြ"
+},
+{
+name:"စုံထောက်",type:"စုံထောက်",structure:["နားမလည်နိုင်သော ဖြစ်ရပ်တစ်ခု ပေါ်လာ","သဲလွန်စများ စုဆောင်း","သက်သေများကို မေးမြန်း","မှားယွင်းသော သံသယတစ်ခု ပေါ်လာ","သဲလွန်စများကို ပြန်လည်ချိတ်ဆက်","အကြောင်းရင်းကို ယုတ္တိရှိစွာ ဖော်ထုတ်"],
+roles:"စုံထောက်၊ သက်သေ၊ သံသယရှိသူ၊ အကူ",
+visual:"သဲလွန်စ၊ မှတ်စုစာအုပ်၊ စုံစမ်းခန်း၊ အလင်းအမှောင်",
+voice:"အေးဆေးတိကျသော Narration၊ မေးခွန်းထုတ်သော Dialogue",
+ending:"အစောပိုင်းသဲလွန်စများနှင့် ကိုက်ညီသော အဖြေကို ဖော်ပြ"
+},
+{
+name:"စွန့်စားခန်း",type:"စွန့်စားခန်း",structure:["ခရီးစတင်ရသည့် အကြောင်းရင်း","မြေပုံ သို့မဟုတ် သဲလွန်စ ရရှိ","ပထမဆုံး အတားအဆီးကို ကျော်ဖြတ်","အဖွဲ့အတွင်း ပြဿနာဖြစ်","အကြီးဆုံး စိန်ခေါ်မှုကို ရင်ဆိုင်","ရည်မှန်းချက်နှင့် ကိုယ်ပိုင်သင်ခန်းစာ ရရှိ"],
+roles:"စွန့်စားသူ၊ လမ်းပြ၊ မိတ်ဖက်၊ ပြိုင်ဘက်",
+visual:"တောတောင်၊ မြစ်၊ ရှေးဟောင်းနေရာ၊ ကျယ်ပြန့်သော ရှုခင်း",
+voice:"ခရီးစဉ်ကို ဖော်ပြသော Narration၊ သတ္တိရှိသော Dialogue",
+ending:"ခရီး၏ ရလဒ်နှင့် နောက်ထပ်စွန့်စားမှုဖြစ်နိုင်ခြေကို ဖော်ပြ"
+},
+{
+name:"စိတ်လှုပ်ရှားဖွယ်",type:"သည်းထိတ်ရင်ဖို",structure:["အရေးပေါ်ပြဿနာကို မိတ်ဆက်","အချိန်ကန့်သတ်ချက် သတ်မှတ်","အချက်အလက်မပြည့်စုံမှုနှင့် အတားအဆီး","ယုံကြည်မှုကို စမ်းသပ်သော လှည့်ကွက်","နောက်ဆုံးအချိန်တွင် ဆုံးဖြတ်ချက်","အကျိုးဆက်နှင့် အဖြေကို ဖော်ပြ"],
+roles:"အဓိကဇာတ်ကောင်၊ သတင်းပေးသူ၊ ပြိုင်ဘက်၊ ကူညီသူ",
+visual:"အနီးကပ်ရိုက်ချက်၊ အရိပ်၊ နာရီ၊ အန္တရာယ်ရှိသော နေရာ",
+voice:"မြန်ဆန်သော Narration၊ ရပ်နားမှုများ၊ တိုးလာသော တင်းမာမှု",
+ending:"အချိန်နှင့် ဆုံးဖြတ်ချက်၏ အကျိုးဆက်ကို ထင်ရှားစေ"
+},
+{
+name:"ဘဝသင်ခန်းစာ",type:"ဒရာမာ",structure:["ဇာတ်ကောင်၏ ဘဝအခြေအနေ","ရင်ဆိုင်နေရသော ပြဿနာ","မှားယွင်းသော ရွေးချယ်မှု","ဆုံးရှုံးမှုမှ သင်ယူမှု","မှန်ကန်သော လုပ်ဆောင်ချက်","ဘဝသင်ခန်းစာကို လက်တွေ့ပြသ"],
+roles:"အဓိကဇာတ်ကောင်၊ မိသားစုဝင်၊ လမ်းညွှန်သူ",
+visual:"နေ့စဉ်ဘဝ၊ လက်တွေ့ကျသော ပတ်ဝန်းကျင်၊ စိတ်ခံစားမှုအနီးကပ်ရိုက်ချက်",
+voice:"နွေးထွေးပြီး အဓိပ္ပာယ်ရှိသော Narration",
+ending:"သင်ခန်းစာကို စကားဖြင့်သာမက ဇာတ်ကောင်၏ လုပ်ရပ်ဖြင့် ပြသ"
+},
+{
+name:"စိတ်ဓာတ်တက်ကြွ",type:"စိတ်ဓာတ်တက်ကြွ",structure:["အိပ်မက်နှင့် လက်ရှိအခက်အခဲ","ပထမဆုံး ကြိုးစားမှု","ကျရှုံးမှုနှင့် သံသယ","အကူအညီ သို့မဟုတ် အတွေးသစ် ရရှိ","ထပ်မံကြိုးစားပြီး အရေးကြီးသော ဆုံးဖြတ်ချက်","တိုးတက်မှုနှင့် မျှော်လင့်ချက်ဖြင့် အဆုံးသတ်"],
+roles:"အိပ်မက်ရှိသူ၊ Mentor၊ မိတ်ဆွေ၊ မိသားစု",
+visual:"အလင်းရောင်တဖြည်းဖြည်း တောက်ပလာခြင်း၊ ကြိုးစားနေသော ဇာတ်ကောင်",
+voice:"တည်ငြိမ်သော Narration မှ စိတ်အားတက်ကြွသော အသံသို့ ပြောင်းလဲ",
+ending:"လက်တွေ့ကျသော တိုးတက်မှုနှင့် ကြိုးစားမှု၏ တန်ဖိုးကို ဖော်ပြ"
+},
+{
+name:"ကလေးကာတွန်း",type:"ကလေးများအတွက်",structure:["ရင်းနှီးသော ကမ္ဘာနှင့် ဇာတ်ကောင်","ပျော်စရာ စိန်ခေါ်မှု","သူငယ်ချင်းများ ပူးပေါင်း","အမှားမှ သင်ယူ","အတူတကွ ဖြေရှင်း","ပျော်ရွှင်မှုနှင့် ရိုးရှင်းသော သင်ခန်းစာ"],
+roles:"ကလေးဇာတ်ကောင်များ၊ မိဘ၊ ဖော်ရွေသော တိရစ္ဆာန်",
+visual:"တောက်ပသောအရောင်၊ ဖော်ရွေသောမျက်နှာ၊ လုံခြုံပြီး စိတ်ကူးယဉ်ဆန်သော ကမ္ဘာ",
+voice:"ရှင်းလင်းသော မြန်မာစကား၊ အသက်အရွယ်နှင့် သင့်တော်သော Dialogue",
+ending:"အပြုသဘောဆောင်သော သင်ခန်းစာနှင့် ပျော်ရွှင်သော အဆုံးသတ်"
+},
+{
+name:"တိရစ္ဆာန်ဟာသ",type:"ဟာသ",structure:["တိရစ္ဆာန်ဇာတ်ကောင်များကို မိတ်ဆက်","အစားအစာ သို့မဟုတ် ပစ္စည်းတစ်ခုကြောင့် ပြဿနာ","တိရစ္ဆာန်တစ်ကောင်က အကြံထုတ်","အခြားတိရစ္ဆာန်များ ပါဝင်လာ","မျှော်လင့်မထားသော လှည့်ကွက်","ချစ်စရာကောင်းသော ဟာသဇာတ်သိမ်း"],
+roles:"အဓိကတိရစ္ဆာန်၊ ပြိုင်ဘက်တိရစ္ဆာန်၊ မိတ်ဖက်",
+visual:"Expressive animal characters၊ သဘာဝပတ်ဝန်းကျင်၊ အလွန်အကျွံမဖြစ်သော ကာတွန်းလှုပ်ရှားမှု",
+voice:"တိရစ္ဆာန်ဇာတ်ကောင်အလိုက် ကွဲပြားသော အသံ",
+ending:"တိရစ္ဆာန်တို့၏ အလွဲတစ်ခုက ချစ်စရာ ဟာသဖြစ်လာ"
+},
+{
+name:"စိတ်ကူးယဉ်",type:"စိတ်ကူးယဉ်",structure:["စိတ်ကူးယဉ်ကမ္ဘာ၏ စည်းမျဉ်းများ","ထူးခြားသော စွမ်းအား သို့မဟုတ် ပစ္စည်းရရှိ","စွမ်းအားအသုံးပြုမှု၏ အကျိုးဆက်","ရန်သူ သို့မဟုတ် စမ်းသပ်မှု","နောက်ဆုံးရွေးချယ်မှု","စိတ်ကူးယဉ်ကမ္ဘာ၏ အနာဂတ်ကို ဖော်ပြ"],
+roles:"သူရဲကောင်း၊ မှော်ဆရာ၊ လမ်းပြ၊ ပြိုင်ဘက်",
+visual:"ထူးဆန်းသောကမ္ဘာ၊ မှော်အလင်း၊ အံ့ဖွယ်ရှုခင်းများ",
+voice:"အံ့ဩမှုကို ဖော်ပြသော Narration၊ ဇာတ်ကောင်အလိုက် Dialogue",
+ending:"ကမ္ဘာ၏ စည်းမျဉ်းနှင့် ကိုက်ညီသော အံ့ဩဖွယ်အဆုံးသတ်"
+},
+{
+name:"သမိုင်းနှင့် ရာဇဝင်",type:"သမိုင်းဇာတ်လမ်း",structure:["ခေတ်နှင့် နေရာကို မိတ်ဆက်","ခေတ်အခြေအနေအတွင်း ပြဿနာ","အရေးကြီးသော ဆုံးဖြတ်ချက်","အဖြစ်အပျက်၏ သက်ရောက်မှု","အဓိကပဋိပက္ခ၏ ရလဒ်","သမိုင်းဆိုင်ရာ အဓိပ္ပာယ်ကို ပြန်လည်ဖော်ပြ"],
+roles:"သမိုင်းဇာတ်ကောင်၊ ဒေသခံ၊ အုပ်ချုပ်သူ၊ မျက်မြင်သက်သေ",
+visual:"သတ်မှတ်ထားသော ခေတ်နှင့် ကိုက်ညီသည့် အဝတ်အစား၊ ဗိသုကာ၊ ပစ္စည်းများ",
+voice:"လေးနက်သော Narration၊ ခေတ်နှင့် ကိုက်ညီသော စကားပြော",
+ending:"အတည်ပြုထားသော သမိုင်းအချက်အလက်နှင့် စိတ်ကူးယဉ်အပိုင်းကို ခွဲခြားဖော်ပြ"
+},
+{
+name:"ကျောင်းသားဟာသ",type:"ဟာသ",structure:["ကျောင်းဘဝနှင့် သူငယ်ချင်းများ","စာသင်ခန်းပြဿနာ","ကျောင်းသား၏ ရယ်စရာအစီအစဉ်","အစီအစဉ်မှားယွင်းသွား","ဆရာနှင့် သူငယ်ချင်းများ ပါဝင်လာ","သင်ခန်းစာပါသော ဟာသအဆုံးသတ်"],
+roles:"ကျောင်းသား၊ ဆရာ၊ သူငယ်ချင်း၊ မိဘ",
+visual:"စာသင်ခန်း၊ ကျောင်းဝင်း၊ စာအုပ်နှင့် ကျောင်းသုံးပစ္စည်းများ",
+voice:"ကျောင်းသားများ၏ သဘာဝကျသော မြန်မာစကား",
+ending:"အပြစ်တင်ခြင်းထက် အမှားမှသင်ယူမှုကို ရယ်စရာဖြင့် ပြသ"
+},
+{
+name:"အလုပ်ခွင်ဟာသ",type:"ဟာသ",structure:["ရုံးအဖွဲ့နှင့် လုပ်ငန်းတာဝန်","အလုပ်ခွင်အခက်အခဲ","ဝန်ထမ်း၏ ဖြေရှင်းနည်း","ဆက်သွယ်မှုလွဲမှားခြင်း","အစီအစဉ်၏ မမျှော်လင့်သောရလဒ်","အဖွဲ့လိုက် ဟာသနှင့် သင်ခန်းစာ"],
+roles:"မန်နေဂျာ၊ ဝန်ထမ်း၊ လုပ်ဖော်ကိုင်ဖက်၊ ဖောက်သည်",
+visual:"ရုံးခန်း၊ Meeting Room၊ ကွန်ပျူတာ၊ လုပ်ငန်းခွင်",
+voice:"ရုံးသုံးစကား၊ သဘာဝကျသော Dialogue၊ Timing ကောင်းသော ဟာသ",
+ending:"အဖွဲ့လိုက်နားလည်မှုရရှိပြီး အလုပ်ခွင်ဟာသဖြင့် အဆုံးသတ်"
+},
+{
+name:"လူမှုဘဝသရော်စာ",type:"သရော်စာ",structure:["လူမှုအလေ့အထတစ်ခုကို မိတ်ဆက်","ဇာတ်ကောင်က ထိုအလေ့အထကို အလွန်အကျွံလိုက်နာ","အကျိုးဆက်များ ပေါ်လာ","ဆန့်ကျင်ဘက်အခြေအနေ ပေါ်လာ","အလေ့အထ၏ အဓိပ္ပာယ်မဲ့မှုကို မြင်လာ","တွေးစရာပါသော ဟာသအဆုံးသတ်"],
+roles:"လူမှုအသိုင်းအဝိုင်းမှ ကိုယ်စားပြုဇာတ်ကောင်များ",
+visual:"နေ့စဉ်လူမှုဘဝ၊ အမြင်ကွဲပြားမှုကို ဖော်ပြသော ရိုက်ချက်များ",
+voice:"ထက်မြက်သော Dialogue၊ မထိခိုက်စေသော သရော်မှု",
+ending:"လူမှုအလေ့အထကို ဝေဖန်တွေးခေါ်စေပြီး အဓိပ္ပာယ်ရှိသော Punchline ပေး"
+},
+{
+name:"မိသားစုဒရာမာ",type:"ဒရာမာ",structure:["မိသားစုအခြေအနေနှင့် ဆက်ဆံရေး","နားလည်မှုလွဲမှားမှု သို့မဟုတ် ပဋိပက္ခ","မပြောဖြစ်ခဲ့သော ခံစားချက်များ ပေါ်လာ","ဆုံးဖြတ်ချက်တစ်ခုက မိသားစုကို စမ်းသပ်","ရိုးသားသော ဆက်သွယ်မှု","ပြန်လည်သင့်မြတ်မှု သို့မဟုတ် လက်တွေ့ကျသော ရလဒ်"],
+roles:"မိဘ၊ သားသမီး၊ မောင်နှမ၊ ဆွေမျိုး",
+visual:"အိမ်တွင်းဘဝ၊ မျက်နှာအမူအရာ၊ နွေးထွေးသော သို့မဟုတ် အေးစက်သော အလင်း",
+voice:"ခံစားချက်ကို လေးစားသော Dialogue၊ သဘာဝကျသော ရပ်နားမှု",
+ending:"ဇာတ်ကောင်တို့၏ ခံစားချက်နှင့် ဆုံးဖြတ်ချက်များ၏ အကျိုးဆက်ကို ပြသ"
+},
+{
+name:"အချစ်ဒရာမာ",type:"ဒရာမာ",structure:["အချစ်နှင့် ဆက်ဆံရေးကို မိတ်ဆက်","အတားအဆီးတစ်ခု ပေါ်လာ","ခံစားချက်နှင့် တာဝန်ဝတ္တရားကြား ရွေးချယ်မှု","ခွဲခွာမှု သို့မဟုတ် အထင်လွဲမှု","ရိုးသားသော ဆုံးဖြတ်ချက်","ပြန်လည်ဆုံတွေ့မှု သို့မဟုတ် အဓိပ္ပာယ်ရှိသော လမ်းခွဲမှု"],
+roles:"ချစ်သူနှစ်ဦး၊ မိတ်ဆွေ၊ မိသားစုဝင်",
+visual:"ခံစားချက်ဖော်ပြသော မျက်နှာအနီးကပ်ရိုက်ချက်၊ သဘာဝအလင်း",
+voice:"နူးညံ့သော Dialogue၊ ခံစားချက်နှင့် ကိုက်ညီသော Narration",
+ending:"အတင်းအကျပ်ပျော်ရွှင်စေခြင်းမဟုတ်ဘဲ ဇာတ်ကောင်၏ ရွေးချယ်မှုကို လေးစား"
+},
+{
+name:"သိပ္ပံစိတ်ကူးယဉ်",type:"သိပ္ပံစိတ်ကူးယဉ်",structure:["အနာဂတ်ကမ္ဘာနှင့် နည်းပညာစည်းမျဉ်း","သိပ္ပံဆိုင်ရာ ရှာဖွေတွေ့ရှိမှု","စမ်းသပ်မှု၏ မမျှော်လင့်သောအကျိုးဆက်","လူသားနှင့် နည်းပညာ ပဋိပက္ခ","အဓိက သိပ္ပံပြဿနာကို ဖြေရှင်း","အနာဂတ်အတွက် မေးခွန်းတစ်ခု ချန်ထား"],
+roles:"သိပ္ပံပညာရှင်၊ အင်ဂျင်နီယာ၊ AI၊ စူးစမ်းသူ",
+visual:"အနာဂတ်မြို့၊ စက်ရုပ်၊ အာကာသ၊ သိပ္ပံဓာတ်ခွဲခန်း",
+voice:"ရှင်းလင်းသော သိပ္ပံအယူအဆများ၊ စိတ်ဝင်စားဖွယ် Narration",
+ending:"ကမ္ဘာ၏ စည်းမျဉ်းများနှင့် ကိုက်ညီသော အဖြေ၊ အနာဂတ်အတွက် စဉ်းစားစရာ"
+},
+{
+name:"ရာဇဝတ်မှုစုံထောက်",type:"စုံထောက်",structure:["ရာဇဝတ်မှု သို့မဟုတ် ပျောက်ဆုံးမှုကို မိတ်ဆက်","သက်သေနှင့် သဲလွန်စများ စုဆောင်း","သံသယရှိသူများ၏ အကြောင်းပြချက်များ","အရေးကြီးသော သဲလွန်စတစ်ခု ပေါ်လာ","အထောက်အထားများကို ချိတ်ဆက်ဖော်ထုတ်","တာဝန်ယူမှုနှင့် အမှန်တရားကို ပြသ"],
+roles:"စုံထောက်၊ စုံစမ်းရေးအဖွဲ့၊ သက်သေ၊ သံသယရှိသူ",
+visual:"စုံစမ်းခန်း၊ သက်သေများ၊ အရေးကြီးသော ပစ္စည်းအနီးကပ်ရိုက်ချက်",
+voice:"အချက်အလက်ကို အခြေခံသော Narration၊ သေချာသော Dialogue",
+ending:"အထောက်အထားအပေါ် အခြေခံသော ဖြေရှင်းချက်နှင့် တာဝန်ယူမှု"
+},
+{
+name:"မဟာဗျူဟာနှင့် တိုက်ပွဲ",type:"မဟာဗျူဟာ",structure:["အဖွဲ့များနှင့် ရည်မှန်းချက်ကို မိတ်ဆက်","အရင်းအမြစ်နှင့် အတားအဆီးများ သတ်မှတ်","ပထမဆုံး မဟာဗျူဟာ","ပြိုင်ဘက်၏ တုံ့ပြန်မှု","အဖွဲ့က အစီအစဉ်ကို ပြောင်းလဲ","ရလဒ်နှင့် ဆုံးဖြတ်ချက်၏ အကျိုးဆက်"],
+roles:"ခေါင်းဆောင်၊ အဖွဲ့ဝင်၊ ပြိုင်ဘက်၊ အကြံပေး",
+visual:"မြေပုံ၊ အဖွဲ့လိုက် လှုပ်ရှားမှု၊ ရှင်းလင်းသော spatial continuity",
+voice:"တိုတောင်းသော အမိန့်ပေးစကား၊ မဟာဗျူဟာကို ရှင်းလင်းသော Narration",
+ending:"အောင်မြင်မှု သို့မဟုတ် ရှုံးနိမ့်မှုကို အစီအစဉ်နှင့် ချိတ်ဆက်ပြသ"
+},
+{
+name:"အားကစားဟာသ",type:"ဟာသ",structure:["အားကစားအသင်းနှင့် ပြိုင်ပွဲကို မိတ်ဆက်","ထူးဆန်းသော လေ့ကျင့်မှု","ပွဲမစမီ အလွဲအချော်","ပြိုင်ပွဲအတွင်း ရယ်စရာဖြစ်ရပ်","အဆုံးအဖြတ်အချိန်","အားကစားစိတ်ဓာတ်နှင့် ဟာသအဆုံးသတ်"],
+roles:"ကစားသမား၊ နည်းပြ၊ ပြိုင်ဘက်၊ ပရိသတ်",
+visual:"အားကစားကွင်း၊ လှုပ်ရှားမှုရိုက်ချက်၊ ဘောလုံးနှင့် အားကစားပစ္စည်း",
+voice:"တက်ကြွသော Commentary၊ အားကစားသမားတို့၏ Dialogue",
+ending:"နိုင်ခြင်းရှုံးခြင်းထက် ကြိုးစားမှုနှင့် အသင်းစိတ်ဓာတ်ကို ဖော်ပြ"
+},
+{
+name:"ဂီတနှင့် အနုပညာ",type:"အနုပညာ",structure:["အနုပညာရှင်၏ အိပ်မက်","ဖန်တီးမှုဆိုင်ရာ အခက်အခဲ","ပြိုင်ဆိုင်မှု သို့မဟုတ် ဝေဖန်မှု","ကိုယ်ပိုင်စတိုင်ကို ရှာဖွေ","အရေးကြီးသော ဖျော်ဖြေမှု သို့မဟုတ် ပြပွဲ","အနုပညာနှင့် ကိုယ်ပိုင်အသံကို ရှာဖွေတွေ့ရှိ"],
+roles:"အဆိုတော်၊ ဂီတသမား၊ ပန်းချီဆရာ၊ ပရိသတ်",
+visual:"စတူဒီယို၊ စင်မြင့်၊ ဂီတတူရိယာ၊ အနုပညာပစ္စည်း",
+voice:"ဖန်တီးမှုကို အားပေးသော Narration၊ သဘာဝကျသော Dialogue",
+ending:"အနုပညာရှင်၏ တိုးတက်မှုနှင့် ကိုယ်ပိုင်ဖန်တီးမှုတန်ဖိုးကို ဖော်ပြ"
+},
+{
+name:"အစားအသောက်ဟာသ",type:"ဟာသ",structure:["အစားအသောက် သို့မဟုတ် ပြိုင်ပွဲကို မိတ်ဆက်","ချက်ပြုတ်မှုစတင်","ပါဝင်ပစ္စည်း အလွဲအချော်","အရသာစမ်းသပ်မှုနှင့် ရယ်စရာတုံ့ပြန်မှု","နောက်ဆုံးပြိုင်ပွဲ သို့မဟုတ် လှည့်ကွက်","အစားအသောက်ဟာသဖြင့် အဆုံးသတ်"],
+roles:"စားဖိုမှူး၊ ဖောက်သည်၊ အစားအသောက်ဝါသနာရှင်",
+visual:"အရောင်စုံအစားအစာ၊ မီးဖိုချောင်၊ ချက်ပြုတ်မှုအနီးကပ်ရိုက်ချက်",
+voice:"စားသောက်မှုနှင့် လိုက်ဖက်သော တက်ကြွသည့် Dialogue",
+ending:"အစားအသောက်နှင့်ပတ်သက်သော ရယ်စရာလှည့်ကွက်"
+},
+{
+name:"ခရီးသွားဟာသ",type:"ဟာသ",structure:["ခရီးစဉ်နှင့် ရည်ရွယ်ချက်","လမ်းခရီးတွင် ပထမဆုံးအလွဲ","နေရာအသစ်နှင့် ယဉ်ကျေးမှုကွာခြားမှု","လမ်းမှားခြင်း သို့မဟုတ် အစီအစဉ်ပျက်ခြင်း","မမျှော်လင့်သော အကူအညီ","ခရီးစဉ်မှ ရယ်စရာအမှတ်တရ"],
+roles:"ခရီးသွား၊ လမ်းပြ၊ ဒေသခံ၊ မိတ်ဆွေ",
+visual:"လှပသော ရှုခင်း၊ ခရီးသွားယာဉ်၊ ဒေသခံဈေးနှင့် လမ်းများ",
+voice:"ခရီးသွား Narration၊ ဒေသခံနှင့် သဘာဝကျသော Dialogue",
+ending:"ခရီးစဉ်၏ မမျှော်လင့်သော အမှတ်တရဖြင့် အဆုံးသတ်"
+},
+{
+name:"မှော်နှင့် ဒဏ္ဍာရီ",type:"စိတ်ကူးယဉ်",structure:["ဒဏ္ဍာရီကမ္ဘာနှင့် ရှေးဟောင်းပုံပြင်","မှော်ပစ္စည်း သို့မဟုတ် ပရောဖက်ပြုချက်","မှော်စွမ်းအား၏ စည်းမျဉ်းကို သင်ယူ","ပြိုင်ဘက်နှင့် စမ်းသပ်မှု","အရေးကြီးသော စွန့်လွှတ်မှု သို့မဟုတ် ဆုံးဖြတ်ချက်","ဒဏ္ဍာရီ၏ ရလဒ်ကို ဖော်ပြ"],
+roles:"သူရဲကောင်း၊ မှော်ဆရာ၊ ဒဏ္ဍာရီလာသတ္တဝါ၊ လမ်းပြ",
+visual:"ရှေးဟောင်းဘုံ၊ မှော်အလင်း၊ ဒဏ္ဍာရီဆန်သော ဝတ်စုံများ",
+voice:"ဒဏ္ဍာရီဆန်သော Narration၊ စိတ်ကူးယဉ် Dialogue",
+ending:"မှော်စည်းမျဉ်းများနှင့် ကိုက်ညီသော အံ့ဖွယ်အဆုံးသတ်"
+},
+{
+name:"စိတ်ပိုင်းဆိုင်ရာသည်းထိတ်ရင်ဖို",type:"သည်းထိတ်ရင်ဖို",structure:["ဇာတ်ကောင်၏ ပုံမှန်ဘဝနှင့် မသေချာမှု","အဖြစ်အပျက်များ မကိုက်ညီလာ","အချက်အလက်နှင့် မှတ်ဉာဏ်ကို သံသယဝင်","ယုံကြည်ရသူအပေါ် မသေချာမှု","အရေးကြီးသော အချက်အလက်ကို ဖော်ထုတ်","အမြင်ပြောင်းလဲစေသော စိတ်ပိုင်းဆိုင်ရာ လှည့်ကွက်"],
+roles:"အဓိကဇာတ်ကောင်၊ ယုံကြည်ရသူ၊ မျက်မြင်သက်သေ",
+visual:"အနီးကပ်ရိုက်ချက်၊ မှန်ပြန်ဟပ်မှု၊ အရိပ်၊ အမြင်ကွဲပြားသော composition",
+voice:"အတွင်းစိတ် Narration၊ တိတ်ဆိတ်မှု၊ အချက်အလက်ကို ဖြည်းဖြည်းချင်းဖော်ထုတ်",
+ending:"အစောပိုင်းအရိပ်အယောင်များကို ပြန်လည်အဓိပ္ပာယ်ဖွင့်စေသော လှည့်ကွက်"
+}
+];
+
+const GENRE_MAP = Object.fromEntries(GENRES.map(g=>[g.name,g]));
+let latestText = "";
+let latestScenes = [];
+let projects = safeJSON(localStorage.getItem("mcas_v2_projects"),[]);
+if(!Array.isArray(projects)) projects=[];
+
+function safeJSON(s,fallback){
+ try{return s ? JSON.parse(s) : fallback}catch(e){return fallback}
+}
+
+const genreSelect=$("genre");
+GENRES.forEach(g=>{
+ const opt=document.createElement("option");
+ opt.value=g.name;opt.textContent=g.name;
+ genreSelect.append(opt);
+});
+
+function updateGenreInfo(){
+ const g=GENRE_MAP[$("genre").value];
+ $("genreInfo").textContent =
+ "Story Type: "+g.type+" | ဇာတ်ကောင်များ: "+g.roles+
+ " | Visual: "+g.visual;
+}
+$("genre").addEventListener("change",updateGenreInfo);
+updateGenreInfo();
+
+document.querySelectorAll("[data-tab]").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  ["studio","characters","projects","guide"].forEach(id=>{
+   $(id).classList.toggle("hidden",id!==btn.dataset.tab);
+  });
+  renderProjects();
+  renderCharacterLibrary();
+ });
+});
+
+function getConfig(){
+ return {
+  title:$("title").value.trim()||"Untitled Cartoon Story",
+  genre:$("genre").value,
+  story:$("story").value.trim(),
+  duration:Number($("duration").value),
+  sec:Number($("sceneLength").value),
+  style:$("style").value,
+  ratio:$("ratio").value,
+  voice:$("voice").value,
+  language:$("language").value,
+  charName:$("charName").value.trim()||"Main Character",
+  charAge:$("charAge").value.trim(),
+  character:$("character").value.trim(),
+  personality:$("personality").value.trim(),
+  rules:$("rules").value.trim()
+ };
+}
+
+function buildSceneBeat(g,i,count){
+ const n=g.structure.length;
+ const index=Math.min(n-1,Math.floor(i*n/count));
+ return g.structure[index];
+}
+
+function getLanguageInstruction(c){
+ if(c.language==="global")
+  return "Write the complete spoken dialogue in natural English for a global audience. Keep Burmese cultural details only when relevant to the story.";
+ if(c.language==="mixed")
+  return "Write visual prompts in precise English. Write all spoken dialogue and voiceover in natural Burmese.";
+ return "Write story explanations and all spoken dialogue in natural Burmese. Image and video generation prompts should use clear production-ready English.";
+}
+
+function buildCharacterBible(c,g){
+ return `CHARACTER BIBLE
+Name: ${c.charName}
+Age: ${c.charAge}
+Appearance: ${c.character}
+Personality: ${c.personality}
+Genre role: ${g.roles}
+Genre: ${g.name}
+
+CHARACTER IMAGE PROMPT:
+Create a professional character reference sheet for ${c.charName},
+a ${c.charAge} character. Appearance: ${c.character}.
+Personality: ${c.personality}.
+Visual style: ${c.style||"consistent animation style"}.
+Show front view, side view, three-quarter view and 5 clear facial expressions.
+Full body, readable silhouette, consistent proportions, clean background.
+No labels, no written text, no watermark.
+
+CONTINUITY RULES:
+${c.rules}
+Keep face shape, eye color, hairstyle, body proportions, costume and age
+consistent across all scenes. Change clothing only when the story explicitly
+requires it. Keep props in the correct hands and preserve screen direction.`;
+}
+
+function buildStory(c,g){
+ const count=Math.ceil(c.duration*60/c.sec);
+ const lang=getLanguageInstruction(c);
+ const beats=[];
+ for(let i=0;i<count;i++) beats.push(buildSceneBeat(g,i,count));
+
+ let scenes=[];
+ for(let i=0;i<count;i++){
+  const num=i+1;
+  const beat=beats[i];
+  const scenePrompt=`SCENE ${String(num).padStart(2,"0")} / ${c.sec} SECONDS
+Genre: ${g.name}
+Story beat: ${beat}
+Premise: ${c.story}
+
+SCENE PURPOSE:
+Advance the story through a clear action, character decision, discovery or reaction.
+Each scene must connect logically to the previous scene and set up the next scene.
+Avoid repeating the same action in consecutive scenes.
+
+CHARACTER ACTION:
+${c.charName} (${c.charAge}): ${c.character}
+Personality: ${c.personality}
+Action and emotion should fit this story beat: ${beat}
+
+IMAGE GENERATION PROMPT:
+Create a high-quality ${c.style} frame from a Myanmar animated story.
+Scene ${num} of ${count}. Story genre: ${g.name}.
+Specific scene action: ${beat}.
+Story context: ${c.story}
+Environment and visual details: ${g.visual}.
+Composition: clear subject, expressive facial acting, readable body language,
+cinematic depth, detailed but uncluttered background, coherent lighting.
+Aspect ratio ${c.ratio}. ${c.rules}
+Keep the character identity identical to the approved Character Bible.
+Show one coherent moment, not a collage or storyboard grid.
+No captions, no logos, no watermark, no random text.
+
+VIDEO GENERATION PROMPT:
+Animate the scene image for ${c.sec} seconds.
+Genre: ${g.name}. Scene action: ${beat}.
+Use believable movement, clear beginning and ending poses,
+subtle facial expressions, natural body motion and suitable camera movement.
+Maintain the same character identity, outfit, props, environment and art style.
+Respect physical continuity and screen direction.
+Do not create new characters unless the story requires them.
+Avoid flickering, face morphing, extra limbs, sudden outfit changes,
+unwanted subtitles, written text or watermarks.
+Aspect ratio ${c.ratio}.
+
+BURMESE VOICEOVER / DIALOGUE:
+Language instruction: ${lang}
+Voice style: ${c.voice}.
+Scene purpose: ${beat}.
+Write short, performable dialogue appropriate for a ${c.sec}-second scene.
+Use distinct voices when multiple characters speak.
+Match emotion and speaking pace to the visible action.
+Do not introduce facts that contradict earlier scenes.
+If narration is needed, use concise natural narration rather than over-explaining.
+Suggested genre delivery: ${g.voice}.
+Do not claim that generated speech audio already exists.
+
+SOUND DESIGN:
+Use appropriate environmental ambience for ${g.visual}.
+Add restrained sound effects that match visible actions.
+Keep dialogue intelligible. Use silence where it improves tension or comedy.
+`;
+
+  scenes.push({
+   number:num,
+   beat:beat,
+   text:scenePrompt
+  });
+ }
+
+ const ending=g.ending;
+ const structure=g.structure.map((s,i)=>(i+1)+". "+s).join("\n");
+ const bible=buildCharacterBible(c,g);
+ const intro=`MYANMAR CARTOON AI STUDIO PRO V2
+TITLE: ${c.title}
+GENRE: ${g.name}
+DURATION: ${c.duration} minutes
+SCENE LENGTH: ${c.sec} seconds
+SCENE COUNT: ${count}
+VISUAL STYLE: ${c.style}
+ASPECT RATIO: ${c.ratio}
+VOICEOVER: ${c.voice}
+
+STORY PREMISE
+${c.story}
+
+GENRE-SPECIFIC STORY STRUCTURE
+${structure}
+
+${bible}
+
+WRITER INSTRUCTIONS:
+${lang}
+Genre-specific tone: ${g.type}.
+Keep character motivation, cause and effect, and scene continuity clear.
+Give the protagonist a goal, obstacle, choice and consequence.
+Make the ending follow from earlier events rather than appearing randomly.
+For historical or factual stories, distinguish verified facts from fiction.
+For children, keep the story age-appropriate.
+`;
+
+ const endingPrompt=`FINAL ENDING STYLE
+${ending}
+
+ENDING SCENE PROMPT:
+Create the final scene for "${c.title}" in the ${g.name} genre.
+Resolve the main story question, show the consequences of the protagonist's
+choices, and use a memorable final image consistent with the Character Bible.
+Visual style: ${c.style}. Aspect ratio: ${c.ratio}.
+No unwanted text, captions or watermarks.
+
+YOUTUBE PACKAGING
+Title: ${c.title} | ${g.name} | Myanmar Cartoon
+Thumbnail Prompt: Create a high-contrast ${c.style} thumbnail for "${c.title}".
+Genre: ${g.name}. Use one strong emotional expression and one clear story conflict.
+Keep the main subject large and readable at mobile size.
+Aspect ratio ${c.ratio}. Leave clean space for adding a Burmese title separately.
+Do not generate gibberish text or logos.
+
+Description Draft:
+${c.story}
+
+Suggested workflow:
+1. Approve the Character Bible reference image.
+2. Generate scene images using the individual image prompts.
+3. Generate short clips using the corresponding video prompts.
+4. Record or synthesize the voiceover separately.
+5. Edit scenes, dialogue, sound and subtitles together.
+`;
+
+ return {c,g,count,scenes,intro,endingPrompt,bible};
+}
+
+function renderStory(data){
+ latestScenes=data.scenes;
+ latestText=data.intro+"\n\n"+
+ data.scenes.map(s=>"========================================\n"+s.text).join("\n")+
+ "\n\n"+data.endingPrompt;
+
+ $("sceneCount").textContent=data.count;
+ $("timeCount").textContent=data.c.duration+" min";
+ $("genreCount").textContent=data.g.name;
+ $("status").textContent="Generated · "+data.count+" Scenes";
+
+ const result=$("result");
+ result.replaceChildren();
+
+ const introCard=document.createElement("div");
+ introCard.className="scene";
+ const introSummary=document.createElement("summary");
+ introSummary.textContent="📘 Story Structure + Character Bible";
+ const introPre=document.createElement("pre");
+ introPre.textContent=data.intro;
+ const introDetails=document.createElement("details");
+ introDetails.open=true;
+ introDetails.append(introSummary,introPre);
+ introCard.append(introDetails);
+ result.append(introCard);
+
+ data.scenes.forEach(s=>{
+  const box=document.createElement("div");
+  box.className="scene";
+  const details=document.createElement("details");
+  const summary=document.createElement("summary");
+  summary.textContent="🎬 Scene "+String(s.number).padStart(2,"0")+" — "+s.beat;
+  const pre=document.createElement("pre");
+  pre.textContent=s.text;
+  const btn=document.createElement("button");
+  btn.textContent="📋 Copy This Scene";
+  btn.addEventListener("click",()=>copyText(s.text,btn));
+  details.append(summary,pre,btn);
+  box.append(details);
+  result.append(box);
+ });
+
+ const endBox=document.createElement("div");
+ endBox.className="scene";
+ const endDetails=document.createElement("details");
+ const endSummary=document.createElement("summary");
+ endSummary.textContent="🏁 Ending + YouTube Packaging";
+ const endPre=document.createElement("pre");
+ endPre.textContent=data.endingPrompt;
+ endDetails.append(endSummary,endPre);
+ endBox.append(endDetails);
+ result.append(endBox);
+}
+
+$("generate").addEventListener("click",()=>{
+ const c=getConfig();
+ if(!c.story){alert("ဇာတ်လမ်းအကြောင်းအရာ ဖြည့်ပါ");return;}
+ const g=GENRE_MAP[c.genre];
+ renderStory(buildStory(c,g));
+ $("result").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+async function copyText(text,btn){
+ try{
+  await navigator.clipboard.writeText(text);
+  const old=btn.textContent;btn.textContent="Copied!";
+  setTimeout(()=>btn.textContent=old,1400);
+ }catch(e){
+  const ta=document.createElement("textarea");
+  ta.value=text;document.body.append(ta);ta.select();
+  const ok=document.execCommand("copy");ta.remove();
+  if(!ok)alert("Copy မရပါက စာသားကို ရွေးပြီး Copy လုပ်ပါ");
+ }
+}
+
+$("copyAll").addEventListener("click",()=>{
+ if(!latestText){alert("အရင်ဆုံး Generate Story ကိုနှိပ်ပါ");return;}
+ copyText(latestText,$("copyAll"));
+});
+
+$("download").addEventListener("click",()=>{
+ if(!latestText){alert("အရင်ဆုံး Generate Story ကိုနှိပ်ပါ");return;}
+ const blob=new Blob([latestText],{type:"text/plain;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=safeFilename($("title").value)+".txt";
+ a.click();URL.revokeObjectURL(url);
+});
+
+function safeFilename(name){
+ return (name||"cartoon-story").replace(/[\\/:*?"<>|]/g,"-").slice(0,80);
+}
+
+function saveProjects(){
+ localStorage.setItem("mcas_v2_projects",JSON.stringify(projects));
+}
+
+$("save").addEventListener("click",()=>{
+ if(!latestText){
+  const c=getConfig();
+  renderStory(buildStory(c,GENRE_MAP[c.genre]));
+ }
+ const c=getConfig();
+ projects.unshift({
+  id:Date.now(),config:c,prompt:latestText,
+  created:new Date().toLocaleString()
+ });
+ projects=projects.slice(0,50);
+ saveProjects();renderProjects();
+ alert("Project ကို Browser ထဲမှာ သိမ်းပြီးပါပြီ");
+});
+
+$("saveCharacter").addEventListener("click",()=>{
+ const obj={
+  charName:$("charName").value,charAge:$("charAge").value,
+  character:$("character").value,personality:$("personality").value,
+  rules:$("rules").value
+ };
+ localStorage.setItem("mcas_v2_character",JSON.stringify(obj));
+ renderCharacterLibrary();
+ alert("Character Bible သိမ်းပြီးပါပြီ");
+});
+
+$("loadCharacter").addEventListener("click",()=>{
+ const c=safeJSON(localStorage.getItem("mcas_v2_character"),null);
+ if(!c){alert("Character Bible မသိမ်းရသေးပါ");return;}
+ $("charName").value=c.charName||"";
+ $("charAge").value=c.charAge||"";
+ $("character").value=c.character||"";
+ $("personality").value=c.personality||"";
+ $("rules").value=c.rules||"";
+ alert("Character Bible ပြန်ဖွင့်ပြီးပါပြီ");
+});
+
+function renderCharacterLibrary(){
+ const c=safeJSON(localStorage.getItem("mcas_v2_character"),null);
+ $("characterLibrary").textContent=c
+  ? "Name: "+c.charName+"\nAge: "+c.charAge+"\nAppearance: "+c.character+
+    "\nPersonality: "+c.personality+"\nContinuity: "+c.rules
+  : "Character မသိမ်းရသေးပါ";
+}
+
+function renderProjects(){
+ const list=$("projectList");
+ list.replaceChildren();
+ if(!projects.length){
+  list.textContent="Project မရှိသေးပါ";return;
+ }
+ projects.forEach(p=>{
+  const card=document.createElement("div");card.className="scene";
+  const title=document.createElement("h3");
+  title.textContent=p.config?.title||"Untitled Project";
+  const meta=document.createElement("p");meta.className="small";
+  meta.textContent=(p.config?.genre||"Unknown genre")+" · "+(p.created||"");
+  const row=document.createElement("div");row.className="actions";
+  const open=document.createElement("button");open.textContent="Open";
+  open.addEventListener("click",()=>{
+   const c=p.config||{};
+   ["title","genre","story","duration","sec","style","ratio","voice",
+    "language","charName","charAge","character","personality","rules"]
+    .forEach(key=>{
+     const el=$(key==="sec"?"sceneLength":key);
+     if(el && c[key]!==undefined)el.value=String(c[key]);
+    });
+   updateGenreInfo();
+   latestText=p.prompt||"";
+   if(latestText){
+    $("result").replaceChildren();
+    const pre=document.createElement("pre");pre.className="output";
+    pre.textContent=latestText;$("result").append(pre);
+    $("status").textContent="Loaded Project";
+   }
+   document.querySelector('[data-tab="studio"]').click();
+  });
+  const del=document.createElement("button");del.textContent="Delete";
+  del.addEventListener("click",()=>{
+   if(!confirm("ဤ Project ကို ဖျက်မလား?"))return;
+   projects=projects.filter(x=>x.id!==p.id);
+   saveProjects();renderProjects();
+  });
+  row.append(open,del);card.append(title,meta,row);list.append(card);
+ });
+}
+
+$("exportJSON").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify(projects,null,2)],
+  {type:"application/json;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download="myanmar-cartoon-projects.json";a.click();
+ URL.revokeObjectURL(url);
+});
+
+$("importFile").addEventListener("change",async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  const imported=JSON.parse(await file.text());
+  if(!Array.isArray(imported))throw Error("Invalid");
+  projects=[...imported,...projects].slice(0,50);
+  saveProjects();renderProjects();
+  alert("Project များ Import လုပ်ပြီးပါပြီ");
+ }catch(err){
+  alert("JSON ဖိုင်မှန်ကန်မှုကို စစ်ဆေးပါ");
+ }finally{
+  e.target.value="";
+ }
+});
+
+$("clearProjects").addEventListener("click",()=>{
+ if(!confirm("သိမ်းထားသော Project အားလုံးကို ဖျက်မလား?"))return;
+ projects=[];saveProjects();renderProjects();
+});
+
+renderProjects();
+renderCharacterLibrary();
+</script>
+</body>
+</html>
